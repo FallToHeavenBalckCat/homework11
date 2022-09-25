@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int Fibonacci(int n) {
+        switch(n){
+            case 0:
+                return 0;
+                break;
+            case 1:
+                return 1;
+                break;
+            default:
+                return Fibonacci(n-1)+Fibonacci(n-2);
+                break;
+        }
+    }
+};

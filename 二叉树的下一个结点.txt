@@ -1,0 +1,28 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode *father;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL), father(NULL) {}
+ * };
+ */
+ /*二叉树，分情况讨论，如果存在右子树，就找到右子树最左下的结点，如果不存在右子树，
+ 就去找当前结点是其父亲的第一个左节点的结点*/
+class Solution {
+public:
+    TreeNode* inorderSuccessor(TreeNode* p) {
+        //如果存在右子树
+        if(p->right!=nullptr) {
+            p=p->right;
+            while(p->left) {
+                p=p->left;
+            }
+            return p;
+        }
+        //如果不存在右子树
+        while(p->father!=nullptr&&p==p->father->right) p=p->father;
+        return p->father;
+    }
+};

@@ -1,0 +1,38 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> _preorder;
+    vector<int> _inorder;
+    unordered_map<int,int> pos;//存储每一个点在中序遍历中的位置
+    int u=0;//表示层数
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        _preorder=preorder,_inorder=inorder;//给全局变量赋值
+        TreeNode* head;//存储答案
+        int n=inorder.size();
+        for(int i=0;i<n;i++) pos[inorder[i]]=i;
+        //pl表示在当前子树中前序遍历的起点
+        //pr表示在当前子树中前序遍历的终点
+        //il表示在当前子树中中序遍历的起点
+        //ir表示在当前子树中中序遍历的终点
+        head=dfs(0,n-1,0,n-1);
+        return head;
+    }
+    
+    TreeNode* dfs(int pl,int pr,int il,int ir){
+        if(pl>pr) return nullptr;//二叉树不存在直接返回异常
+        int k=pos[_preorder[pl]]-il;//前序遍历的根节点在中序遍历中的位置减去
+        //中序遍历中的起始位置为当前左子树区间的长度
+        TreeNode* root=new TreeNode(_preorder[pl]);//用根节点值初始化一个根节点
+        root->left=dfs(pl+1,pl+1+k-1,il,il+k-1);//构建左子树
+        root->right=dfs(pl+1+k-1+1,pr,il+k+1,ir);//构建右子树
+        return root;
+    }
+};
